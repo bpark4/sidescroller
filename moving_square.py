@@ -36,7 +36,7 @@ class Enviro:
         self.width = wWidth
         self.height = wHeight
         # number of ghosts to pass before level ends
-        self.count_to_win = 10
+        self.count_to_win = 5
         # complete level 3 to win
         self.win = False
 
@@ -128,7 +128,7 @@ class Enviro:
         if self.count_to_win<=0 and self.diff<2:
             # if completed starting levels go to next
             self.diff+=1
-            self.count_to_win=10
+            self.count_to_win=5*self.diff
             return True
         elif self.count_to_win<=0 and self.diff>=2:
             # if completed final level you win
