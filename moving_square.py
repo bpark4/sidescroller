@@ -160,6 +160,10 @@ class Enviro:
         # return enemies list
         return self.enemies
 
+    def get_level(self):
+        # returns level number
+        return self.diff
+    
     def won(self):
         # checks if you've won
         return self.win
@@ -395,6 +399,13 @@ class Hud:
         self.windowWidth = ww
         self.windowHeight = wh
 
+    def instructions(self):
+        # alert player of instructions
+        pygame.font.init()
+        end = pygame.font.SysFont('Comic Sans MS', 30)
+        textsurface = end.render('Try right and up arrow keys', True,(255,255,255))
+        self.screen.blit(textsurface,(self.windowWidth/4+100,self.windowHeight/4-100))
+
     def next_level(self):
         # alert player that they have entered the next level
         pygame.font.init()
@@ -480,6 +491,9 @@ class App:
         self._display_surf.blit(self.enemy,(150,150))
         # show heads up display
         self.hud.render_lives(self.player.get_lives())
+        # render instructions if first level
+        if(self.enviro.get_level() == 0):
+            self.hud.instructions()
         # wait
         self.clock.tick(200)
         # flip screen
@@ -506,6 +520,7 @@ class App:
         while( self._running):
             # render everything
             self.on_render()
+                
             # prime for next event
             pygame.event.pump()
             # key pressing event
@@ -555,6 +570,11 @@ class App:
             # stop playing by hitting escape
             if(keys[K_ESCAPE]):
                 self._running = False
+
+            # work around way to get window close button to work
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self._running = False
             
 
         # quit if game is over
